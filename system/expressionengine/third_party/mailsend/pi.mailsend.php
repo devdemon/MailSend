@@ -56,7 +56,7 @@ class Mailsend
 		$from_name = $this->EE->TMPL->fetch_param('from_name', $this->EE->config->item('webmaster_name'));
 		$cc = $this->EE->TMPL->fetch_param('cc', '');
 		$bcc = $this->EE->TMPL->fetch_param('bcc', '');
-		$subject = $this->EE->TMPL->fetch_param('from_name', '');
+		$subject = $this->EE->TMPL->fetch_param('subject', '');
 		$message = $this->EE->TMPL->tagdata;
 
 		// Check for proper email adress

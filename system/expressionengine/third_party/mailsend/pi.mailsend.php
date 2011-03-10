@@ -74,13 +74,13 @@ class Mailsend
 			return;
 		}
 
-		if ($this->EE->form_validation->valid_emails($cc) == FALSE)
+		if ($cc != FALSE && $this->EE->form_validation->valid_emails($cc) == FALSE)
 		{
 			$this->EE->TMPL->log_item('MailSend: Invalid "CC" email address.');
 			return;
 		}
 
-		if ($this->EE->form_validation->valid_emails($bcc) == FALSE)
+		if ($bcc != FALSE && $this->EE->form_validation->valid_emails($bcc) == FALSE)
 		{
 			$this->EE->TMPL->log_item('MailSend: Invalid "BCC" email address.');
 			return;
@@ -91,7 +91,7 @@ class Mailsend
 		$this->EE->email->EE_initialize();
 		$this->EE->email->wordwrap = false;
 		$this->EE->email->mailtype = 'html';
-		$this->EE->email->from( $from_email, $from_name);
+		$this->EE->email->from($from_email, $from_name);
 		$this->EE->email->to($to);
 		$this->EE->email->subject($subject);
 		$this->EE->email->cc($cc);

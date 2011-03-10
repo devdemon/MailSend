@@ -51,11 +51,55 @@ class Mailsend
 	{
 		$this->EE =& get_instance();
 
+		$to = $this->EE->TMPL->fetch_param('to', '');
+		$from_email = $this->EE->TMPL->fetch_param('from_email', $this->EE->config->item('webmaster_email'));
+		$from_name = $this->EE->TMPL->fetch_param('from_name', $this->EE->config->item('webmaster_name'));
+		$cc = $this->EE->TMPL->fetch_param('cc', '');
+		$bcc = $this->EE->TMPL->fetch_param('bcc', '');
+		$subject = $this->EE->TMPL->fetch_param('from_name', '');
+		$message = $this->EE->TMPL->tagdata;
+
+		// Check for proper email adress
+		$this->EE->load->library('form_validation');
+
+		if ($this->EE->form_validation->valid_emails($to) == FALSE)
+		{
+			$this->EE->TMPL->log_item('MailSend: Invalid "TO" email address.');
+			return;
+		}
+
+		if ($this->EE->form_validation->valid_email($from_email) == FALSE)
+		{
+			$this->EE->TMPL->log_item('MailSend: Invalid "FROM" email address.');
+			return;
+		}
+
+		if ($this->EE->form_validation->valid_emails($cc) == FALSE)
+		{
+			$this->EE->TMPL->log_item('MailSend: Invalid "CC" email address.');
+			return;
+		}
+
+		if ($this->EE->form_validation->valid_emails($bcc) == FALSE)
+		{
+			$this->EE->TMPL->log_item('MailSend: Invalid "BCC" email address.');
+			return;
+		}
+
 		$this->EE->load->library('email');
-		$this->EE->load->helper('text');
-
 		$this->EE->email->clear();
+		$this->EE->email->EE_initialize();
+		$this->EE->email->wordwrap = false;
+		$this->EE->email->mailtype = 'html';
+		$this->EE->email->from( $from_email, $from_name);
+		$this->EE->email->to($to);
+		$this->EE->email->subject($subject);
+		$this->EE->email->cc($cc);
+		$this->EE->email->bcc($bcc);
+		$this->EE->email->message($message);
+		$this->EE->email->send();
 
+		return;
 	}
 
 	// ********************************************************************************* //

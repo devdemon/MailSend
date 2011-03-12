@@ -86,6 +86,9 @@ class Mailsend
 			return;
 		}
 
+		// Parse globals
+		$message = $this->EE->TMPL->parse_globals($message);
+
 		$this->EE->load->library('email');
 		$this->EE->email->clear();
 		$this->EE->email->EE_initialize();
